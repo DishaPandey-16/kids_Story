@@ -9,7 +9,7 @@ if (!apiKey) {
 const genAI = new GoogleGenerativeAI(apiKey);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-flash",
+  model: "gemini-flash-latest",
 });
 
 const generationConfig = {
@@ -25,25 +25,165 @@ export const chatSession = model.startChat({
   history: [
     {
       role: "user",
-      parts: [{ text: "Mwas, Kijana Mbunifu" }],
+      parts: [
+        {
+          text: "Create engaging children's stories in JSON format. Each story should have: story_title, cover_image_prompt, chapters array with chapter_title, chapter_text, and image_prompt for each chapter, and voice_cues array with chapter_title and chapter_text_with_voice_cues including voice direction markers like [pause], [whisper], [speak with excitement], [speak softly], etc. Make stories for ages 4-10, educational yet fun, with vivid descriptions and simple English language.",
+        },
+      ],
     },
     {
       role: "model",
       parts: [
         {
-          text: '```json\n{\n  "story_title": "Mwas, Kijana Mbunifu",\n  "cover_image_prompt": "A vibrant illustration of a young African boy, Mwas, with a playful and curious expression. He is surrounded by colorful, whimsical objects representing his inventions: a toy helicopter made of recycled materials, a wind-powered car, and a colorful kite flying high in the sky. The background is a lively African village with mud-brick houses, lush greenery, and a bright, sunny sky.",\n  "chapters": [\n    {\n      "chapter_title": "Mwas na Fikra zake",\n      "chapter_text": "Katika kijiji kidogo kilichojaa miti ya mikuyu na nyumba za udongo, kuliishi kijana mkorofi na mbunifu aitwaye Mwas. Mwas alikuwa na akili timamu na fikra zisizoisha. Alipenda kutafuta njia mpya za kutatua matatizo na kuunda vitu vipya. Alicheza na vitu vya kuchezea alivyotengeneza mwenyewe kutoka kwa vifaa vya taka, akiwa na ndoto kubwa za kuwasaidia watu katika kijiji chake.",\n      "image_prompt": "An illustration of Mwas in his village, surrounded by colorful objects he has made: a toy car, a kite, and a wind-powered windmill made from recycled materials. The background shows his village, with huts made of mud bricks and palm trees swaying gently in the breeze."\n    },\n    {\n      "chapter_title": "Simu ya Mwas",\n      "chapter_text": "Siku moja, Mwas alipata shida kubwa. Mama yake alikuwa mgonjwa na hakukuwa na njia ya kupata daktari kutoka kijijini. Mwas alifikiria sana, akitaka kupata suluhisho. Kisha, akafanya kitu cha ajabu. Alichukua chupa tupu ya soda, waya wa shaba, na kipande cha kitambaa. Akatengeneza kitu kama simu, akijua kwamba sauti inaweza kusafiri kwa waya. Alichukua simu yake ya chupa na kwenda nyumbani kwa jirani yake, mzee Ali, ambaye alijua kuwasiliana na daktari wa kijiji.",\n      "image_prompt": "A close-up illustration of Mwas holding his "phone" made from a soda bottle, copper wire, and cloth. He looks determined, trying to transmit a message. The background shows a mud-brick house and a worried mother inside."\n    },\n    {\n      "chapter_title": "Msaada kutoka Mbali",\n      "chapter_text": "Mzee Ali alimsikiliza Mwas kwa uangalifu. Alielewa shida ya Mwas na akaunganisha simu yake ya chupa na simu nyingine iliyojengwa na waya mrefu. Sauti ya Mwas iliweza kufikia daktari aliyekuwa mbali, na daktari huyo aliahidi kuja kwa haraka iwezekanavyo. Mwas alifurahi sana, akisikia kwamba mama yake atapata msaada.",\n      "image_prompt": "A detailed illustration of Mwas, Mzee Ali, and the other villagers connecting the "phones" with long wires. The illustration should show the village setting with trees and huts in the background. The image should convey a sense of hope and connection."\n    },\n    {\n      "chapter_title": "Utukufu wa Ubunifu",\n      "chapter_text": "Daktari alifika kijijini haraka na akamtibu mama ya Mwas. Mwas alikuwa na furaha kubwa, akisikia kwamba alikuwa ameokoa mama yake kwa akili yake na ubunifu wake. Watu wa kijiji walimsifu Mwas kwa ustadi wake na akili yake ya ajabu. Mwas alijua kwamba ubunifu wake ulikuwa na nguvu ya kusaidia watu wengi.",\n      "image_prompt": "An illustration showing the doctor arriving in the village, with Mwas and his mother standing beside him. The village community is celebrating Mwas\'s ingenuity, and the doctor is praising his skills. The scene should be joyful and celebratory, with bright colors and happy expressions."\n    },\n    {\n      "chapter_title": "Mwas, Mbunifu wa Kijiji",\n      "chapter_text": "Tangu siku hiyo, Mwas aliendelea kuunda vitu vipya na kuboresha maisha ya watu katika kijiji chake. Alijenga matanki ya maji kwa kutumia makopo ya zamani, aliunda taa za sola kwa kutumia chupa za plastiki, na akapanda miti mingi ili kuongeza uzuri wa kijiji chake. Mwas alikuwa mbunifu wa kijiji, akiendeshwa na ndoto ya kuwasaidia wengine kwa kutumia akili yake na mikono yake.",\n      "image_prompt": "A vibrant illustration of Mwas working on new inventions in his village. The image should depict a variety of his creations, such as water tanks made from old cans, solar lights from plastic bottles, and a lush garden with thriving trees. The scene should convey a sense of progress and hope, with a vibrant and joyful atmosphere."\n    }\n  ],\n  "voice_cues": [\n    {\n      "chapter_title": "Mwas na Fikra zake",\n      "chapter_text_with_voice_cues": "Katika kijiji kidogo kilichojaa miti ya mikuyu na nyumba za udongo, [pause] kuliishi kijana mkorofi na mbunifu aitwaye Mwas. [whisper] Mwas alikuwa na akili timamu na fikra zisizoisha. [speak with excitement] Alipenda kutafuta njia mpya za kutatua matatizo na kuunda vitu vipya. [pause] Alicheza na vitu vya kuchezea alivyotengeneza mwenyewe kutoka kwa vifaa vya taka, [speak with a dreamy tone] akiwa na ndoto kubwa za kuwasaidia watu katika kijiji chake."\n    },\n    {\n      "chapter_title": "Simu ya Mwas",\n      "chapter_text_with_voice_cues": "Siku moja, [speak in a concerned tone] Mwas alipata shida kubwa. [pause] Mama yake alikuwa mgonjwa na hakukuwa na njia ya kupata daktari kutoka kijijini. [pause] Mwas alifikiria sana, akitaka kupata suluhisho. [speak slowly and thoughtfully] Kisha, akafanya kitu cha ajabu. [speak with excitement] Alichukua chupa tupu ya soda, waya wa shaba, na kipande cha kitambaa. [pause] Akatengeneza kitu kama simu, akijua kwamba sauti inaweza kusafiri kwa waya. [speak with determination] Alichukua simu yake ya chupa na kwenda nyumbani kwa jirani yake, mzee Ali, ambaye alijua kuwasiliana na daktari wa kijiji."\n    },\n    {\n      "chapter_title": "Msaada kutoka Mbali",\n      "chapter_text_with_voice_cues": "Mzee Ali alimsikiliza Mwas kwa uangalifu. [pause] Alielewa shida ya Mwas na akaunganisha simu yake ya chupa na simu nyingine iliyojengwa na waya mrefu. [speak with a sense of wonder] Sauti ya Mwas iliweza kufikia daktari aliyekuwa mbali, na daktari huyo aliahidi kuja kwa haraka iwezekanavyo. [speak with happiness] Mwas alifurahi sana, akisikia kwamba mama yake atapata msaada."\n    },\n    {\n      "chapter_title": "Utukufu wa Ubunifu",\n      "chapter_text_with_voice_cues": "Daktari alifika kijijini haraka na akamtibu mama ya Mwas. [speak with joy] Mwas alikuwa na furaha kubwa, akisikia kwamba alikuwa ameokoa mama yake kwa akili yake na ubunifu wake. [speak with admiration] Watu wa kijiji walimsifu Mwas kwa ustadi wake na akili yake ya ajabu. [speak with pride] Mwas alijua kwamba ubunifu wake ulikuwa na nguvu ya kusaidia watu wengi."\n    },\n    {\n      "chapter_title": "Mwas, Mbunifu wa Kijiji",\n      "chapter_text_with_voice_cues": "Tangu siku hiyo, [speak with a sense of accomplishment] Mwas aliendelea kuunda vitu vipya na kuboresha maisha ya watu katika kijiji chake. [speak with enthusiasm] Alijenga matanki ya maji kwa kutumia makopo ya zamani, aliunda taa za sola kwa kutumia chupa za plastiki, na akapanda miti mingi ili kuongeza uzuri wa kijiji chake. [speak with a sense of pride] Mwas alikuwa mbunifu wa kijiji, [speak with a sense of purpose] akiendeshwa na ndoto ya kuwasaidia wengine kwa kutumia akili yake na mikono yake."\n    }\n  ]\n}\n```',
+          text: JSON.stringify({
+            story_title: "Luna and the Magical Garden",
+            cover_image_prompt:
+              "A beautiful illustration of a young girl with curly hair standing in front of a magical garden filled with glowing flowers, floating butterflies, and sparkling lights. The background shows a peaceful village with mountains in the distance.",
+            chapters: [
+              {
+                chapter_title: "Luna's Discovery",
+                chapter_text:
+                  "In a small village nestled between green hills lived a curious girl named Luna. One sunny afternoon, while playing near her grandmother's house, Luna discovered a hidden gate covered with flowering vines. Behind the gate lay the most beautiful garden she had ever seen. Flowers of every color imaginable bloomed together, and butterflies danced through the air like tiny dancers.",
+                image_prompt:
+                  "An illustration of Luna, a young girl with bright eyes and a yellow dress, discovering a magical gate covered in green vines and colorful flowers. Sunlight streams through the trees.",
+              },
+              {
+                chapter_title: "The Garden's Secret",
+                chapter_text:
+                  "As Luna walked deeper into the garden, she noticed something remarkable. Each flower glowed with a soft light, and when she listened carefully, she could hear them singing. A wise old gardener appeared and smiled warmly. He told Luna that this was a garden where dreams grew like flowers, and each person could help make someone else's dreams come true.",
+                image_prompt:
+                  "An illustration showing Luna surrounded by glowing flowers. An elderly gardener with kind eyes stands nearby.",
+              },
+              {
+                chapter_title: "Planting Dreams",
+                chapter_text:
+                  "Luna learned that to plant a dream, she had to think of someone she wanted to help. She thought of her friend Marcus, who dreamed of becoming a brave explorer. Luna planted a special seed and watered it with her kindness. The seed grew into a beautiful blue flower that shimmered with magical light.",
+                image_prompt:
+                  "An illustration of Luna kneeling beside a glowing blue flower, carefully watering it. The magical garden surrounds her with blooming flowers and floating sparkles.",
+              },
+              {
+                chapter_title: "The Gift of Giving",
+                chapter_text:
+                  "Over many visits to the garden, Luna learned the true magic: when you help others achieve their dreams, your own dreams grow stronger too. She planted flowers for her teacher, her parents, and children in her village. The garden grew more beautiful with each dream planted.",
+                image_prompt:
+                  "An illustration showing Luna in the center of a flourishing garden with many different colored flowers blooming. Villagers can be seen in the background.",
+              },
+              {
+                chapter_title: "Luna's Garden Lives On",
+                chapter_text:
+                  "When Luna returned to the village, she brought seeds from the magical garden and started her own dream garden. Her neighbors helped her plant and care for it. Soon, the whole village had gardens where dreams grew. Magic was everywhere when people worked together and believed in helping each other.",
+                image_prompt:
+                  "A vibrant illustration of the village transformed with many small gardens full of colorful flowers. Luna stands surrounded by neighbors tending to their gardens.",
+              },
+            ],
+            voice_cues: [
+              {
+                chapter_title: "Luna's Discovery",
+                chapter_text_with_voice_cues:
+                  "In a small village nestled between green hills [pause] lived a curious girl named Luna. [speak in a warm tone] One sunny afternoon, [speak with anticipation] while playing near her grandmother's house, Luna discovered a hidden gate [pause] covered with flowering vines. [speak with wonder] Behind the gate lay the most beautiful garden she had ever seen.",
+              },
+              {
+                chapter_title: "The Garden's Secret",
+                chapter_text_with_voice_cues:
+                  "As Luna walked deeper into the garden, [speak slowly] she noticed something remarkable. [pause] Each flower glowed [speak with amazement] with a soft light. [speak gently] A wise old gardener appeared and smiled warmly. [speak kindly] He told Luna this was a garden where dreams grew like flowers.",
+              },
+              {
+                chapter_title: "Planting Dreams",
+                chapter_text_with_voice_cues:
+                  "Luna learned [speak with enthusiasm] that to plant a dream, [pause] she had to think of someone she wanted to help. [speak thoughtfully] She thought of her friend Marcus who dreamed of becoming a brave explorer. [pause] The seed grew into a beautiful blue flower [speak with wonder] that shimmered with magical light.",
+              },
+              {
+                chapter_title: "The Gift of Giving",
+                chapter_text_with_voice_cues:
+                  "Over many visits to the garden, [speak with pride] Luna learned the true magic: [pause] when you help others achieve their dreams, [pause] your own dreams grow stronger too. [speak with joy] The garden grew more beautiful with each dream planted.",
+              },
+              {
+                chapter_title: "Luna's Garden Lives On",
+                chapter_text_with_voice_cues:
+                  "When Luna returned to the village, [speak with accomplishment] she brought seeds and started her own dream garden. [pause] Her neighbors helped her plant and care for it. [pause] Soon, the whole village had gardens where dreams grew. [speak wisely] Magic was everywhere when people worked together.",
+              },
+            ],
+          }),
         },
       ],
     },
     {
       role: "user",
-      parts: [{ text: "Mwas, The creative boy\n" }],
+      parts: [{ text: "Create an engaging children's story" }],
     },
     {
       role: "model",
       parts: [
         {
-          text: '```json\n{\n  "story_title": "Mwas, The Creative Boy",\n  "cover_image_prompt": "A vibrant illustration of a young African boy, Mwas, with a playful and curious expression. He is surrounded by colorful, whimsical objects representing his inventions: a toy helicopter made of recycled materials, a wind-powered car, and a colorful kite flying high in the sky. The background is a lively African village with mud-brick houses, lush greenery, and a bright, sunny sky.",\n  "chapters": [\n    {\n      "chapter_title": "Mwas and His Ideas",\n      "chapter_text": "In a small village filled with fig trees and mud-brick houses, lived a mischievous and creative boy named Mwas. Mwas had a bright mind and endless ideas. He loved to find new ways to solve problems and build new things. He played with toys he made himself from scrap materials, dreaming big about helping people in his village.",\n      "image_prompt": "An illustration of Mwas in his village, surrounded by colorful objects he has made: a toy car, a kite, and a wind-powered windmill made from recycled materials. The background shows his village, with huts made of mud bricks and palm trees swaying gently in the breeze."\n    },\n    {\n      "chapter_title": "Mwas\'s Phone",\n      "chapter_text": "One day, Mwas faced a big problem. His mother was sick, and there was no way to reach a doctor from the village. Mwas thought long and hard, wanting to find a solution. Then, he did something amazing. He took an empty soda bottle, some copper wire, and a piece of cloth. He made something like a phone, knowing that sound could travel through wires. He took his bottle phone and went to the home of his neighbor, Old Ali, who knew how to contact the village doctor.",\n      "image_prompt": "A close-up illustration of Mwas holding his "phone" made from a soda bottle, copper wire, and cloth. He looks determined, trying to transmit a message. The background shows a mud-brick house and a worried mother inside."\n    },\n    {\n      "chapter_title": "Help from Afar",\n      "chapter_text": "Old Ali listened to Mwas carefully. He understood Mwas\'s problem and connected his bottle phone to another phone made with a long wire. Mwas\'s voice reached the doctor far away, and the doctor promised to come as quickly as possible. Mwas was overjoyed, knowing his mother would get help.",\n      "image_prompt": "A detailed illustration of Mwas, Old Ali, and the other villagers connecting the "phones" with long wires. The illustration should show the village setting with trees and huts in the background. The image should convey a sense of hope and connection."\n    },\n    {\n      "chapter_title": "The Glory of Creativity",\n      "chapter_text": "The doctor arrived in the village quickly and treated Mwas\'s mother. Mwas was very happy, knowing that he had saved his mother with his intelligence and creativity. The villagers praised Mwas for his skills and his amazing mind. Mwas knew that his creativity had the power to help many people.",\n      "image_prompt": "An illustration showing the doctor arriving in the village, with Mwas and his mother standing beside him. The village community is celebrating Mwas\'s ingenuity, and the doctor is praising his skills. The scene should be joyful and celebratory, with bright colors and happy expressions."\n    },\n    {\n      "chapter_title": "Mwas, the Village Inventor",\n      "chapter_text": "From that day on, Mwas continued to create new things and improve the lives of people in his village. He built water tanks using old cans, made solar lights using plastic bottles, and planted many trees to add beauty to his village. Mwas was the village inventor, driven by the dream of helping others with his mind and his hands.",\n      "image_prompt": "A vibrant illustration of Mwas working on new inventions in his village. The image should depict a variety of his creations, such as water tanks made from old cans, solar lights from plastic bottles, and a lush garden with thriving trees. The scene should convey a sense of progress and hope, with a vibrant and joyful atmosphere."\n    }\n  ],\n  "voice_cues": [\n    {\n      "chapter_title": "Mwas and His Ideas",\n      "chapter_text_with_voice_cues": "In a small village filled with fig trees and mud-brick houses, [pause] lived a mischievous and creative boy named Mwas. [whisper] Mwas had a bright mind and endless ideas. [speak with excitement] He loved to find new ways to solve problems and build new things. [pause] He played with toys he made himself from scrap materials, [speak with a dreamy tone] dreaming big about helping people in his village."\n    },\n    {\n      "chapter_title": "Mwas\'s Phone",\n      "chapter_text_with_voice_cues": "One day, [speak in a concerned tone] Mwas faced a big problem. [pause] His mother was sick, and there was no way to reach a doctor from the village. [pause] Mwas thought long and hard, wanting to find a solution. [speak slowly and thoughtfully] Then, he did something amazing. [speak with excitement] He took an empty soda bottle, some copper wire, and a piece of cloth. [pause] He made something like a phone, knowing that sound could travel through wires. [speak with determination] He took his bottle phone and went to the home of his neighbor, Old Ali, who knew how to contact the village doctor."\n    },\n    {\n      "chapter_title": "Help from Afar",\n      "chapter_text_with_voice_cues": "Old Ali listened to Mwas carefully. [pause] He understood Mwas\'s problem and connected his bottle phone to another phone made with a long wire. [speak with a sense of wonder] Mwas\'s voice reached the doctor far away, and the doctor promised to come as quickly as possible. [speak with happiness] Mwas was overjoyed, knowing his mother would get help."\n    },\n    {\n      "chapter_title": "The Glory of Creativity",\n      "chapter_text_with_voice_cues": "The doctor arrived in the village quickly and treated Mwas\'s mother. [speak with joy] Mwas was very happy, knowing that he had saved his mother with his intelligence and creativity. [speak with admiration] The villagers praised Mwas for his skills and his amazing mind. [speak with pride] Mwas knew that his creativity had the power to help many people."\n    },\n    {\n      "chapter_title": "Mwas, the Village Inventor",\n      "chapter_text_with_voice_cues": "From that day on, [speak with a sense of accomplishment] Mwas continued to create new things and improve the lives of people in his village. [speak with enthusiasm] He built water tanks using old cans, made solar lights using plastic bottles, and planted many trees to add beauty to his village. [speak with a sense of pride] Mwas was the village inventor, [speak with a sense of purpose] driven by the dream of helping others with his mind and his hands."\n    }\n  ]\n}\n```',
+          text: JSON.stringify({
+            story_title: "Sammy the Brave Little Squirrel",
+            cover_image_prompt:
+              "A cute illustration of a small brown squirrel with big bright eyes and a fluffy tail, standing in a lush green forest with tall oak trees, mushrooms, and woodland flowers.",
+            chapters: [
+              {
+                chapter_title: "Sammy's Forest Home",
+                chapter_text:
+                  "In the heart of an old forest lived a little squirrel named Sammy. Sammy was not the biggest squirrel, but he had a big heart and lots of courage. He lived in a cozy tree hole with his friends, and they spent their days gathering acorns and playing among the branches.",
+                image_prompt:
+                  "A charming illustration of Sammy the squirrel in his tree home, with acorns stored on shelves and his forest friends around him.",
+              },
+              {
+                chapter_title: "A New Friend",
+                chapter_text:
+                  "One day, Sammy heard a soft crying sound. He followed it and found a tiny bird with an injured wing. The bird was afraid and didn't know how to fly back to its nest. Sammy realized he could help this new friend. With patience and kindness, he stayed with the bird all day.",
+                image_prompt:
+                  "An illustration of Sammy comforting a small injured bird with a gentle expression.",
+              },
+              {
+                chapter_title: "The Rescue Plan",
+                chapter_text:
+                  "Sammy gathered all his forest friends - the rabbits, the deer, and the wise old owl. Together, they made a plan to help the little bird. The owl knew where the nest was, the deer would help reach the tall tree, and the rabbits would find the softest moss for the nest.",
+                image_prompt:
+                  "An illustration of Sammy with all his forest friends working together in the forest.",
+              },
+              {
+                chapter_title: "Teamwork Makes Dreams Work",
+                chapter_text:
+                  "With everyone helping, they carefully brought the little bird back to its nest. The mother bird was so grateful, and the baby bird was happy to be home. Sammy learned that even small creatures can do big things when they work together and care for others.",
+                image_prompt:
+                  "An illustration showing all the forest animals celebrating as the little bird reunites with its mother.",
+              },
+              {
+                chapter_title: "A Lesson of Friendship",
+                chapter_text:
+                  "From that day on, Sammy and the little bird became the best of friends. Sammy learned that true courage is not about being the biggest or strongest, but about caring for others and being brave enough to help. The forest became a happier place because of his kindness.",
+                image_prompt:
+                  "An illustration of Sammy and the bird friend playing together in the forest, surrounded by all their friends.",
+              },
+            ],
+            voice_cues: [
+              {
+                chapter_title: "Sammy's Forest Home",
+                chapter_text_with_voice_cues:
+                  "In the heart of an old forest [pause] lived a little squirrel named Sammy. [speak warmly] Sammy was not the biggest squirrel, [pause] but he had a big heart. [speak with joy] He lived in a cozy tree hole [pause] with his friends.",
+              },
+              {
+                chapter_title: "A New Friend",
+                chapter_text_with_voice_cues:
+                  "One day, [pause] Sammy heard a soft crying sound. [speak gently] He followed it [pause] and found a tiny bird with an injured wing. [speak with concern] The bird was afraid. [pause] Sammy realized he could help this new friend.",
+              },
+              {
+                chapter_title: "The Rescue Plan",
+                chapter_text_with_voice_cues:
+                  "Sammy gathered all his forest friends [pause] the rabbits, [pause] the deer, and the wise old owl. [speak with determination] Together, they made a plan [pause] to help the little bird.",
+              },
+              {
+                chapter_title: "Teamwork Makes Dreams Work",
+                chapter_text_with_voice_cues:
+                  "With everyone helping, [pause] they carefully brought the little bird [speak with excitement] back to its nest. [pause] The mother bird was so grateful. [speak with joy] Sammy learned that even small creatures [pause] can do big things when they work together.",
+              },
+              {
+                chapter_title: "A Lesson of Friendship",
+                chapter_text_with_voice_cues:
+                  "From that day on, [speak with warmth] Sammy and the little bird became the best of friends. [pause] Sammy learned that true courage [speak meaningfully] is not about being the biggest or strongest, [pause] but about caring for others. [speak with pride] The forest became a happier place because of his kindness.",
+              },
+            ],
+          }),
         },
       ],
     },

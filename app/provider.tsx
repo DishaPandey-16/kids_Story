@@ -1,5 +1,4 @@
 "use client";
-import { NextUIProvider } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import Header from "./_components/Header";
 import { db } from "@/config/db";
@@ -22,7 +21,7 @@ function Provider({ children }: { children: React.ReactNode }) {
         .select()
         .from(Users)
         .where(eq(Users.email, user?.primaryEmailAddress?.emailAddress ?? ""));
-      
+
 
       // If user does not exist, insert them into the database
       if (!userResp.length) {
@@ -58,13 +57,11 @@ function Provider({ children }: { children: React.ReactNode }) {
 
 
   return (
-      <UserDetailContext.Provider value={{ userDetails, setUserDetails }}>
-        <NextUIProvider>
-          {/* Header */}
-          <Header />
-          {children}
-        </NextUIProvider>
-      </UserDetailContext.Provider>
+    <UserDetailContext.Provider value={{ userDetails, setUserDetails }}>
+      {/* Header */}
+      <Header />
+      {children}
+    </UserDetailContext.Provider>
   );
 }
 

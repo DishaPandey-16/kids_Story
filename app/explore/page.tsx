@@ -5,7 +5,6 @@ import { desc } from "drizzle-orm";
 import React, { useEffect, useState } from "react";
 import StoryItemCard from "../dashboard/_components/StoryItemCard";
 import { toast, ToastContainer } from "react-toastify";
-import { Button } from "@nextui-org/button";
 import Loading from "../dashboard/_components/Loading";
 
 function Explore() {
@@ -15,29 +14,29 @@ function Explore() {
   const notify = (message: string) => toast.done(message);
   const errNotify = (message: string) => toast.error(message);
 
-    useEffect(() => {
+  useEffect(() => {
     getFirstStory()// Initial load with offset 0
   }, []);
-    
-    const getFirstStory = async () => {
-        setLoading(true)
-        try {
-            const res = await db
-                .select()
-                .from(storyData)
-                .orderBy(desc(storyData.id))
-                .limit(4)
-                .offset(0);
-            setStories(res);
-            setOffset(4);
-            notify("Stories fetched");
-        } catch (e) {
-            console.log(e);
-            errNotify("An error occurred");
-        } finally {
-            setLoading(false);
-        }
-    };
+
+  const getFirstStory = async () => {
+    setLoading(true)
+    try {
+      const res = await db
+        .select()
+        .from(storyData)
+        .orderBy(desc(storyData.id))
+        .limit(4)
+        .offset(0);
+      setStories(res);
+      setOffset(4);
+      notify("Stories fetched");
+    } catch (e) {
+      console.log(e);
+      errNotify("An error occurred");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const GetAllStories = async () => {
     setLoading(true);
@@ -49,7 +48,7 @@ function Explore() {
         .limit(4)
         .offset(offset);
       setStories((prev) => [...prev, ...res]);
-      setOffset(prev => prev+4); // Update the offset
+      setOffset(prev => prev + 4); // Update the offset
       notify("Stories fetched");
     } catch (e) {
       console.log(e);
@@ -61,8 +60,8 @@ function Explore() {
 
   return (
     <div className="min-h-screen p-10 md:px-20 lg:px-40">
-          <ToastContainer />
-        <Loading isLoading={loading} />
+      <ToastContainer />
+      <Loading isLoading={loading} />
       <h2 className="font-bold text-xl md:text-2xl lg:text-4xl text-primary">
         Explore More Stories
       </h2>
@@ -72,15 +71,14 @@ function Explore() {
         ))}
       </div>
       <div className="w-full text-center flex justify-center mt-4">
-              {!loading && (
-            <Button
-          color="primary"
-          className="text-semibold text-white"
-          onClick={() => GetAllStories()} // Fetch more stories and increment offset
-          disabled={loading} 
-        >
-          {loading ? "Loading..." : "Get More"}
-        </Button>)}
+        {!loading && (
+          <button
+            className="px-6 py-2 bg-primary text-white font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50"
+            onClick={() => GetAllStories()} // Fetch more stories and increment offset
+            disabled={loading}
+          >
+            {loading ? "Loading..." : "Get More"}
+          </button>)}
       </div>
     </div>
   );

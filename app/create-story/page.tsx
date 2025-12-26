@@ -4,7 +4,6 @@ import StorySubjectInput from "./_components/StorySubjectInput";
 import StoryType from "./_components/StoryType";
 import AgeGroup from "./_components/AgeGroup";
 import ImageStyle from "./_components/ImageStyle";
-import { Button } from "@nextui-org/button";
 import { chatSession } from "@/config/GeminiAi";
 import uuid4 from "uuid4";
 import { db } from "@/config/db";
@@ -17,6 +16,7 @@ import { useUser } from "@clerk/nextjs";
 import "react-toastify/dist/ReactToastify.css";
 import { UserDetailContext } from "../_context/UserDetailContext";
 import { eq } from "drizzle-orm";
+import { saveImageToIndexedDB } from "@/functions/indexedDb";
 
 export interface fieldData {
   fieldValue: string;
@@ -36,7 +36,7 @@ function CreateStory() {
   const notify = (message: string) => toast.success(message);
   const errorNotify = (message: string) => toast.error(message);
   const { user } = useUser();
-  const {userDetails, setUserDetails} = useContext(UserDetailContext)
+  const { userDetails, setUserDetails } = useContext(UserDetailContext)
 
   const onHandleUserSelection = (data: fieldData) => {
     setFormData((prevData: any) => {
@@ -46,17 +46,17 @@ function CreateStory() {
       };
     });
   };
-  
+
   // generate ai story
   const GenerateStory = async () => {
     console.log("Generate story", formData);
     const coins = userDetails?.credits;
 
-    if (coins < 1) {
-      errorNotify("Not enough coins. Please purchase");
-      router.push("/add-coins");
-      return;
-    }
+    // if (coins < 1) {
+    //   errorNotify("Not enough coins. Please purchase");
+    //   router.push("/add-coins");
+    //   return;
+    // }
 
     const Final_Prompt = `write a kid story on description for ${formData?.AgeGroup} years kids, ${formData?.Type} ,and all images on ${formData?.ImageStyle} style: ${formData?.storySubject}. give me 5 chapters. With detailed image text prompt for each of chapter and image prompt for story cover book with story name, all in json fields formats`;
 
@@ -66,28 +66,35 @@ function CreateStory() {
       // Generate story from AI
       const result = await chatSession.sendMessage(Final_Prompt);
       const responseText = await result?.response.text();
-      
+
 
       // Image generation process
       const story = JSON.parse(responseText);
       console.log("story", story);
 
       const imageResp = await axios.post("/api/generate-image", {
-        prompt: `Design a book cover set in an African environment. Use bold text for the title: "${story?.story_title}". Incorporate elements like African landscapes, traditional patterns, colors inspired by African culture, and any specific details from the prompt: "${story?.cover_image_prompt}".`,
+        prompt: `Design a book cover set in an Indian environment. Use bold text for the title: "${story?.story_title}". Incorporate elements like Indian landscapes, traditional patterns, colors inspired by Indian culture, and any specific details from the prompt: "${story?.cover_image_prompt}".`,
       });
 
       const AIimage = imageResp.data.imageUrl;
-      
+
 
       const imageResult = await axios.post("/api/save-image", {
         url: AIimage,
       });
-      const firebaseImageUrl = imageResult?.data.imageUrl;
+      let firebaseImageUrl = imageResult?.data.imageUrl;
+
+      // Fallback to IndexedDB if Firebase fails (returns base64)
+      if (firebaseImageUrl && firebaseImageUrl.startsWith("data:image")) {
+        const localImageId = `local-${uuid4()}`;
+        await saveImageToIndexedDB(localImageId, firebaseImageUrl);
+        firebaseImageUrl = localImageId; // Use local ID as reference
+      }
 
       const resp: any = await SaveInDB(responseText, firebaseImageUrl);
 
       // Subtract coins and update context
-      await subtractCoins(coins - 1); // Ensure coins are updated before continuing
+      // await subtractCoins(coins - 1); // Ensure coins are updated before continuing
 
       notify("Story generated successfully!");
 
@@ -132,7 +139,7 @@ function CreateStory() {
 
     try {
       let parsedResult = JSON.parse(result);
-      
+
 
       const final_result = await db
         .insert(storyData)
@@ -149,7 +156,7 @@ function CreateStory() {
           userImage: user?.imageUrl,
         })
         .returning({ storyId: storyData?.storyId });
-      
+
       return final_result;
     } catch (e) {
       console.log(e);
@@ -176,14 +183,13 @@ function CreateStory() {
         <ImageStyle userSelection={onHandleUserSelection} />
       </div>
       <div className="flex justify-end my-10">
-        <Button
-          color="primary"
-          className="p-10 text-2xl"
+        <button
+          className="px-8 py-5 text-2xl bg-primary text-white rounded-lg font-semibold hover:opacity-90 transition-opacity disabled:opacity-50"
           onClick={GenerateStory}
           disabled={loading}
         >
           Generate Story
-        </Button>
+        </button>
       </div>
       <CustomLoader isLoading={loading} />
     </div>

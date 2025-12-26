@@ -1,4 +1,3 @@
-import { Button } from '@nextui-org/button'
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import "react-social-icons/meetup";
@@ -14,7 +13,7 @@ function LastPage() {
   const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL}${pathname}`;
   const title = "Check out this story I just read on Story-Yetu";
   const [showShare, setShowShare] = useState(false);
-  const notify = (message:string) => toast.success(message);
+  const notify = (message: string) => toast.success(message);
   const copy = async () => {
     console.log("Copying to clipboard");
     await navigator.clipboard.writeText(shareUrl);
@@ -27,24 +26,24 @@ function LastPage() {
       <h2 className="text-center text-2xl text-white">The End...</h2>
       <p className="text-center text-white text-xs">By wabunifu labs</p>
       <div className="flex flex-col w-full md:w-[50%] gap-4">
-        <Button
-          className="flex justify-center items-center"
+        <button
+          className="px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:opacity-90 transition-opacity"
           onClick={() => router.push("/explore")}
         >
           See Other stories
-        </Button>
-        <Button
-          className="flex justify-center items-center"
+        </button>
+        <button
+          className="px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:opacity-90 transition-opacity"
           onClick={() => router.push("/create-story")}
         >
           Create New Story
-        </Button>
-        <Button
+        </button>
+        <button
           onClick={() => setShowShare(!showShare)}
-          className="flex justify-center items-center"
+          className="px-6 py-3 bg-white text-primary font-semibold rounded-lg hover:opacity-90 transition-opacity"
         >
           Share Story
-        </Button>
+        </button>
       </div>
 
       {showShare && (
@@ -58,9 +57,9 @@ function LastPage() {
           <a target="_blank" href={`whatsapp://send?text=${title} ${shareUrl}`}>
             <FaWhatsapp className="text-green-400" size={32} />
           </a>
-          <Button  onClick={() => copy()} className='cursor-pointer z-[999]'>
+          <button onClick={() => copy()} className='cursor-pointer z-[999]'>
             <FaLink className="text-gray-400" size={32} />
-          </Button>
+          </button>
         </div>
       )}
     </div>

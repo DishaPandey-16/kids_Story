@@ -7,7 +7,6 @@ import HTMLFlipBook from "react-pageflip";
 import CoverPage from "./_components/CoverPage";
 import StoryPages from "./_components/StoryPages";
 import LastPage from "./_components/LastPage";
-import { Button } from "@nextui-org/button";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -16,11 +15,11 @@ import {
   BiSolidLeftArrowCircle,
 } from "react-icons/bi";
 
-function ViewStory({ params }) {
-  const [story, setStory] = useState(null); // Initialize as null
-  const errorNotify = (message) => toast.error(message);
-  const notify = (message) => toast.success(message);
-  const bookRef = useRef();
+function ViewStory({ params }: { params: { id: string } }) {
+  const [story, setStory] = useState<any>(null); // Initialize as null
+  const errorNotify = (message: string) => toast.error(message);
+  const notify = (message: string) => toast.success(message);
+  const bookRef = useRef<any>(null);
   const [count, setCount] = useState(0);
   const [isMobile, setIsMobile] = useState(false); // State to track if it's mobile screen
 
@@ -66,21 +65,21 @@ function ViewStory({ params }) {
           <HTMLFlipBook
             ref={bookRef}
             size="stretch"
-            minWidth={315}
+            minWidth={350}
             maxWidth={1000}
             minHeight={500}
             maxHeight={1533}
             maxShadowOpacity={0.5}
             showCover={true}
-            height={500}
-            width={500} // default width for non-responsive handling
+            height={800}
+            width={600} // default width for non-responsive handling
             useMouseEvents={isMobile} // Enable mouse events on small screens
             mobileScrollSupport={false}
             style={{
               width: "95%",
-              height: 'auto'
+              height: "auto",
             }}
-            className="md:my-5 my-1 rounded-lg w-full sm:w-96 md:w-[500px] lg:w-[600px] xl:w-[800px]"
+            className="md:my-5 my-1 rounded-lg w-full sm:w-96 md:w-[600px] lg:w-[700px] xl:w-[900px]"
           >
             <div>
               <CoverPage imageUrl={story.coverimage} />
@@ -97,26 +96,26 @@ function ViewStory({ params }) {
         )}
 
         {!isMobile && count < story?.output?.chapters?.length - 1 && (
-          <Button
-            className="absolute top-[250px] -right-10 text-4xl"
+          <div
+            className="absolute top-[250px] -right-10 text-4xl cursor-pointer"
             onClick={() => {
               bookRef.current.pageFlip().flipNext();
               setCount((prev) => prev + 1);
             }}
           >
             <BiSolidRightArrowCircle className="h-full text-primary" />
-          </Button>
+          </div>
         )}
         {!isMobile && count > 0 && (
-          <Button
-            className="absolute top-[250px] -left-10 text-4xl"
+          <div
+            className="absolute top-[250px] -left-10 text-4xl cursor-pointer"
             onClick={() => {
               bookRef.current.pageFlip().flipPrev();
               setCount((prev) => prev - 1);
             }}
           >
             <BiSolidLeftArrowCircle className="h-full text-primary" />
-          </Button>
+          </div>
         )}
       </div>
     </div>
